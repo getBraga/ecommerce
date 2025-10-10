@@ -27,17 +27,18 @@ namespace eCommerce.Application
             if (usuarioDto.Id != id) throw new Exception("Id não confere!");
             var usuarioExistente = _usuarioRepository.GetById(id);
             if (usuarioExistente == null) throw new Exception("Usuário não encontrado!");
-     
             usuarioExistente.AtualizarUsuario(
-                id,
                 usuarioDto.Nome,
                 usuarioDto.Email,
                 usuarioDto.Sexo,
                 usuarioDto.RG,
                 usuarioDto.CPF,
                 usuarioDto.NomeMae,
-                usuarioDto.SituacaoCadastro
-            );
+                usuarioDto.SituacaoCadastro,
+                null,
+                null,
+                null);
+           
 
             _usuarioRepository.Update(usuarioExistente);
 
@@ -46,16 +47,20 @@ namespace eCommerce.Application
 
         public UsuarioDto CriarUsuario(UsuarioDto dto)
         {
-            var usuario = new Usuario();
-            usuario.CriarUsuario(
+           
+          var usuario = Usuario.CriarUsuario(
         dto.Nome,
         dto.Email,
         dto.Sexo,
         dto.RG,
         dto.CPF,
         dto.NomeMae,
-        dto.SituacaoCadastro
-   
+        dto.SituacaoCadastro,
+        null,
+        null,
+        null
+
+
     );
             var novoUsuario = _usuarioRepository.Add(usuario);
             dto.Id = novoUsuario.Id;

@@ -1,71 +1,89 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using eCommerce.Models;
 
-namespace eCommerce.Models
+public class Usuario
 {
-    public class Usuario
+    public int Id { get; private set; }
+    public string Nome { get; private set; } = null!;
+    public string Email { get; private set; } = null!;
+    public string? Sexo { get; private set; }
+    public string RG { get; private set; } = null!;
+    public string CPF { get; private set; } = null!;
+    public string? NomeMae { get; private set; }
+    public string? SituacaoCadastro { get; private set; }
+    public DateTimeOffset DataCadastro { get; private set; } = DateTimeOffset.Now;
+    public DateTimeOffset? DataAtualizacao { get; private set; }
+    public Contato? ContatoUsuario { get; private set; }
+    public ICollection<EnderecoEntrega>? EnderecosEntrega { get; private set; }
+    public ICollection<Departamento>? Departamentos { get; private set; }
+
+    protected Usuario() { }
+
+    public static Usuario CriarUsuario(string nome, string email, string sexo, string rg, string cpf, string nomeMae, string situacaoCadastro, Contato? contatoUsuario, ICollection<EnderecoEntrega>? enderecoEntrega, ICollection<Departamento>? departamento)
     {
-        public int Id { get; private set; }
-        public string Nome { get; private set; } = null!;
-        public string Email { get; private set; } = null!;
-        public string? Sexo { get; private set; }
-        public string RG { get; private set; } = null!;
-        public string CPF { get; private set; } = null!;
-        public string? NomeMae { get; private set; } 
-        public string? SituacaoCadastro { get; private set; } 
-        public DateTimeOffset DataCadastro { get; private set; }
-        public Contato? ContatoUsuario { get; private set; }
-        public ICollection<EnderecoEntrega>? EnderecosEntrega { get; private set; }
-        public ICollection<Departamento>? Departamentos { get; private set; }
-
-       
-        public void CriarUsuario(
-    string nome,
-    string email,
-    string sexo,
-    string rg,
-    string cpf,
-    string nomeMae,
-    string situacaoCadastro
-
-)
-        {
-            Nome = nome;
-            Email = email;
-            Sexo = sexo;
-            RG = rg;
-            CPF = cpf;
-            NomeMae = nomeMae;
-            SituacaoCadastro = situacaoCadastro;
-          
-        }
-
-        public void AtualizarUsuario(
-     int id,
-    string nome,
-    string email,
-    string sexo,
-    string rg,
-    string cpf,
-    string nomeMae,
-    string situacaoCadastro
-
-)
-        {
-            Id = id;
-            Nome = nome;
-            Email = email;
-            Sexo = sexo;
-            RG = rg;
-            CPF = cpf;
-            NomeMae = nomeMae;
-            SituacaoCadastro = situacaoCadastro;
-
-        }
+        var usuario = new Usuario();
+        usuario.InicializarUsuario(nome, email, sexo, rg, cpf, nomeMae, situacaoCadastro, contatoUsuario, enderecoEntrega, departamento);
+        return usuario;
     }
 
+    private void InicializarUsuario(string nome, string email, string sexo, string rg, string cpf, string nomeMae, string situacaoCadastro, Contato? contatoUsuario, ICollection<EnderecoEntrega>? enderecoEntrega, ICollection<Departamento>? departamento)
+    {
+        SetContatoUsuario(contatoUsuario);
+        SetEnderecosEntrega(enderecoEntrega);
+        SetDepartamentos(departamento);
+        SetNome(nome);
+        SetEmail(email);
+        SetSexo(sexo);
+        SetRG(rg);
+        SetCPF(cpf);
+        SetNomeMae(nomeMae);
+        SetSituacaoCadastro(situacaoCadastro);
+    }
 
+    public void AtualizarUsuario(string nome, string email, string sexo, string rg, string cpf, string nomeMae, string situacaoCadastro, Contato? contatoUsuario, ICollection<EnderecoEntrega>? enderecoEntrega, ICollection<Departamento>? departamento)
+    {
+        SetContatoUsuario(contatoUsuario);
+        SetEnderecosEntrega(enderecoEntrega);
+        SetDepartamentos(departamento);
+        SetNome(nome);
+        SetEmail(email);
+        SetSexo(sexo);
+        SetRG(rg);
+        SetCPF(cpf);
+        SetNomeMae(nomeMae);
+        SetSituacaoCadastro(situacaoCadastro);
+        DataAtualizacao = DateTimeOffset.Now;
+    }
+
+   
+    public void SetNome(string nome)
+    {
+        if (string.IsNullOrWhiteSpace(nome)) throw new ArgumentException("Nome do usuário não pode ser vazio ou nulo.", nameof(nome));
+        Nome = nome;
+    }
+
+    public void SetEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException("Email do usuário não pode ser vazio ou nulo.", nameof(email));
+        Email = email;
+    }
+
+    public void SetSexo(string? sexo) => Sexo = sexo;
+
+    public void SetRG(string rg)
+    {
+        if (string.IsNullOrWhiteSpace(rg)) throw new ArgumentException("RG do usuário não pode ser vazio ou nulo.", nameof(rg));
+        RG = rg;
+    }
+
+    public void SetCPF(string cpf)
+    {
+        if (string.IsNullOrWhiteSpace(cpf)) throw new ArgumentException("CPF do usuário não pode ser vazio ou nulo.", nameof(cpf));
+        CPF = cpf;
+    }
+
+    public void SetNomeMae(string? nomeMae) => NomeMae = nomeMae;
+    public void SetSituacaoCadastro(string? situacaoCadastro) => SituacaoCadastro = situacaoCadastro;
+    public void SetContatoUsuario(Contato? contatoUsuario) => ContatoUsuario = contatoUsuario;
+    public void SetEnderecosEntrega(ICollection<EnderecoEntrega>? enderecosEntrega) => EnderecosEntrega = enderecosEntrega;
+    public void SetDepartamentos(ICollection<Departamento>? departamentos) => Departamentos = departamentos;
 }
