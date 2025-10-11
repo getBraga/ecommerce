@@ -12,12 +12,21 @@ namespace eCommerce.Models
         public string Nome { get; private set; } = null!;
         public ICollection<Usuario>? Usuarios { get; private set; }
 
-        public Departamento(string nome, ICollection<Usuario>? usuarios)
+        protected Departamento()
         {
-            SetNome(nome);
-            SetUsuarios(usuarios);
+       
         }
-
+        public static Departamento CriarDepartamento(string nome, ICollection<Usuario>? usuarios)
+        {
+            var departamento = new Departamento();
+            departamento.IncluirNovoDepartamento(nome, usuarios);
+            return departamento;
+        }
+        public  void AtualizarDepartamento(int id, string nome, ICollection<Usuario>? usuarios)
+        {
+          
+            UpdateDepartamento(id, nome, usuarios);
+        }
         public void SetNome(string nome)
         {
             if (string.IsNullOrWhiteSpace(nome))
@@ -30,12 +39,12 @@ namespace eCommerce.Models
         {
             Usuarios = usuarios;
         }
-        public void CriarDepartamento(string nome, ICollection<Usuario>? usuarios)
+        private void IncluirNovoDepartamento(string nome, ICollection<Usuario>? usuarios)
         {
             SetNome(nome);
             SetUsuarios(usuarios);
         }
-        public void AtualizarDepartamento(int id, string nome, ICollection<Usuario>? usuarios)
+        private void UpdateDepartamento(int id, string nome, ICollection<Usuario>? usuarios)
         {
             if (id < 0) throw new ArgumentException("Id inválido", nameof(id));
             Id = id;

@@ -13,14 +13,21 @@ namespace eCommerce.Models
         public string? Telefone { get; private set; }
         public string? Celular { get; private set; }
         public Usuario Usuario { get; private set; } = null!;
-        public Contato(int usuarioId, string? telefone, string? celular, Usuario usuario)
+        protected Contato()
         {
-            SetCelular(celular);
-            SetTelefone(telefone);
-            SetUsuarioId(usuarioId);
-            SetUsuario(usuario);    
+            
         }
-        
+
+        public static Contato CriarContato(int usuarioId, string? telefone, string? celular, Usuario usuario)
+        {
+            var contato = new Contato();
+            contato.IncluirContato(usuarioId, telefone, celular, usuario);
+            return contato;
+        }
+        public void AtualizarContato(int id, int usuarioId, string? telefone, string? celular, Usuario usuario)
+        {
+            UpdateContato(id, usuarioId, telefone, celular, usuario);
+        }
         public void SetUsuario(Usuario usuario)
         {
             Usuario = usuario ?? throw new ArgumentNullException(nameof(usuario), "Usuário não pode ser nulo");
@@ -39,24 +46,24 @@ namespace eCommerce.Models
         {
             Celular = celular;
         }
-        public void CriarContato(int usuarioId, string? telefone, string? celular, Usuario usuario)
+        private void IncluirContato(int usuarioId, string? telefone, string? celular, Usuario usuario)
         {
-            if (usuarioId < 0) throw new ArgumentException("Id de usuário inválido", nameof(usuarioId));
-            UsuarioId = usuarioId;
-            Telefone = telefone;
-            Celular = celular;
-            Usuario = usuario;
+            SetUsuario(usuario);
+            SetUsuarioId(usuarioId);
+            SetTelefone(telefone);
+            SetCelular(celular);
         }
 
-        public void AtualizarContato(int id, int usuarioId, string? telefone, string? celular, Usuario usuario)
+        private void UpdateContato(int id, int usuarioId, string? telefone, string? celular, Usuario usuario)
         {
-            if(id < 0 ) throw new ArgumentException("Id inválido", nameof(id));
-            if(usuarioId < 0) throw new ArgumentException("Id de usuário inválido", nameof(usuarioId)); 
+            if (id < 0) throw new ArgumentException("Id inválido", nameof(id));
             Id = id;
-            UsuarioId = usuarioId;
-            Telefone = telefone;
-            Celular = celular;
-            Usuario = usuario;
+            SetUsuario(usuario);
+            SetUsuarioId(usuarioId);
+            SetTelefone(telefone);
+            SetCelular(celular);
+
+
         }
     }
 
