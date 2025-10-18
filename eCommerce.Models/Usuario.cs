@@ -25,6 +25,13 @@ public class Usuario
         return usuario;
     }
 
+    public static Usuario AtualizarUsuario(int id, string nome, string email, string sexo, string rg, string cpf, string nomeMae, string situacaoCadastro, Contato? contatoUsuario, ICollection<EnderecoEntrega>? enderecoEntrega, ICollection<Departamento>? departamento)
+    {
+        var usuario = new Usuario();
+        if(id < 0) throw new ArgumentException("Id inválido", nameof(id));
+        usuario.UpdateUsuario(nome, email, sexo, rg, cpf, nomeMae, situacaoCadastro, contatoUsuario, enderecoEntrega, departamento);
+        return usuario;
+    }
     private void InicializarUsuario(string nome, string email, string sexo, string rg, string cpf, string nomeMae, string situacaoCadastro, Contato? contatoUsuario, ICollection<EnderecoEntrega>? enderecoEntrega, ICollection<Departamento>? departamento)
     {
         SetContatoUsuario(contatoUsuario);
@@ -39,7 +46,7 @@ public class Usuario
         SetSituacaoCadastro(situacaoCadastro);
     }
 
-    public void AtualizarUsuario(string nome, string email, string sexo, string rg, string cpf, string nomeMae, string situacaoCadastro, Contato? contatoUsuario, ICollection<EnderecoEntrega>? enderecoEntrega, ICollection<Departamento>? departamento)
+    private void UpdateUsuario(string nome, string email, string sexo, string rg, string cpf, string nomeMae, string situacaoCadastro, Contato? contatoUsuario, ICollection<EnderecoEntrega>? enderecoEntrega, ICollection<Departamento>? departamento)
     {
         SetContatoUsuario(contatoUsuario);
         SetEnderecosEntrega(enderecoEntrega);

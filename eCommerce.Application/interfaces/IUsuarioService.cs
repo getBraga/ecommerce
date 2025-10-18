@@ -10,10 +10,10 @@ namespace eCommerce.Application.interfaces
 {
     public interface IUsuarioService
     {
-        public IList<Usuario> Usuarios();
-        public Usuario? UsuarioById(int id);
-        public UsuarioDto CriarUsuario(UsuarioDto usuario);
-        public UsuarioDto AtualizarUsuario(UsuarioDto usuario, int id);
-        public bool DeletarUsuario(int id);
+        public Task<IList<Usuario>> Usuarios();
+        public Task<Usuario?> UsuarioById(int id);
+        public Task<UsuarioDto> CriarUsuario(UsuarioDto usuario);
+        public Task<UsuarioDto> AtualizarUsuario(UsuarioDto usuario, int id);
+        public Task<bool> DeletarUsuario(int id);
     }
 }

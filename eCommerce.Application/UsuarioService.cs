@@ -12,64 +12,64 @@ namespace eCommerce.Application
         {
             _usuarioRepository = usuarioRepository;
         }
-        public IList<Usuario> Usuarios()
+        public async Task<IList<Usuario>> Usuarios()
         {
-            return _usuarioRepository.Get();
+            return await _usuarioRepository.Get();
         }
-        public Usuario? UsuarioById(int id)
+        public async Task<Usuario?> UsuarioById(int id)
         {
-            return _usuarioRepository.GetById(id);
+            return await _usuarioRepository.GetById(id);
         }
 
 
-        public UsuarioDto AtualizarUsuario(UsuarioDto usuarioDto, int id)
+        public async Task<UsuarioDto> AtualizarUsuario(UsuarioDto usuarioDto, int id)
         {
             if (usuarioDto.Id != id) throw new Exception("Id não confere!");
-            var usuarioExistente = _usuarioRepository.GetById(id);
-            if (usuarioExistente == null) throw new Exception("Usuário não encontrado!");
-            usuarioExistente.AtualizarUsuario(
-                usuarioDto.Nome,
-                usuarioDto.Email,
-                usuarioDto.Sexo,
-                usuarioDto.RG,
-                usuarioDto.CPF,
-                usuarioDto.NomeMae,
-                usuarioDto.SituacaoCadastro,
-                null,
-                null,
-                null);
-           
 
-            _usuarioRepository.Update(usuarioExistente);
+            var usuario = Usuario.AtualizarUsuario(
+                id,
+               usuarioDto.Nome,
+               usuarioDto.Email,
+               usuarioDto.Sexo,
+               usuarioDto.RG,
+               usuarioDto.CPF,
+               usuarioDto.NomeMae,
+               usuarioDto.SituacaoCadastro,
+               null,
+               null,
+               null);
+
+
+            await _usuarioRepository.Update(usuario);
 
             return usuarioDto;
         }
 
-        public UsuarioDto CriarUsuario(UsuarioDto dto)
+        public async Task<UsuarioDto> CriarUsuario(UsuarioDto dto)
         {
            
-          var usuario = Usuario.CriarUsuario(
-        dto.Nome,
-        dto.Email,
-        dto.Sexo,
-        dto.RG,
-        dto.CPF,
-        dto.NomeMae,
-        dto.SituacaoCadastro,
-        null,
-        null,
-        null
+            var usuario = Usuario.CriarUsuario(
+          dto.Nome,
+          dto.Email,
+          dto.Sexo,
+          dto.RG,
+          dto.CPF,
+          dto.NomeMae,
+          dto.SituacaoCadastro,
+          null,
+          null,
+          null
 
 
-    );
-            var novoUsuario = _usuarioRepository.Add(usuario);
+      );
+            var novoUsuario = await _usuarioRepository.Add(usuario);
             dto.Id = novoUsuario.Id;
             return dto;
         }
 
-        public bool DeletarUsuario(int id)
+        public async Task<bool> DeletarUsuario(int id)
         {
-            var deletarUsuario = _usuarioRepository.Delete(id);
+            var deletarUsuario = await _usuarioRepository.Delete(id);
             if (!deletarUsuario) throw new Exception("Usuário não encontrado!");
             return deletarUsuario;
         }

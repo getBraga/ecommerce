@@ -16,17 +16,17 @@ namespace eCommerce.API.Controllers
         }
         [HttpGet(Name = "Usuarios")]
 
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var usuarios = _usuarioService.Usuarios();
+            var usuarios = await _usuarioService.Usuarios();
             return Ok(usuarios);
 
         }
  
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var usuario = _usuarioService.UsuarioById(id);
+            var usuario =await  _usuarioService.UsuarioById(id);
             if(usuario ==null)
             {
                 return NotFound("Usuário não encontrado!");
@@ -35,24 +35,24 @@ namespace eCommerce.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]UsuarioDto usuario) {
+        public async Task <IActionResult> Post([FromBody]UsuarioDto usuario) {
 
-            var result = _usuarioService.CriarUsuario(usuario);
+            var result = await _usuarioService.CriarUsuario(usuario);
             return Ok(result);
         }
 
         [HttpPut]
-        public IActionResult Put(UsuarioDto usuario, int id)
+        public async Task<IActionResult> Put(UsuarioDto usuario, int id)
         {
 
-            var result = _usuarioService.AtualizarUsuario(usuario, id);
+            var result = await _usuarioService.AtualizarUsuario(usuario, id);
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _usuarioService.DeletarUsuario(id);
+            await _usuarioService.DeletarUsuario(id);
             return Ok("Usuário deletado com sucesso!");
         }
     }

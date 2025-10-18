@@ -19,7 +19,7 @@ namespace eCommerce.IOC
             //), b => b.MigrationsAssembly(typeof(ECommerceContext).Assembly.FullName)));
 
             services.AddDbContext<ECommerceContext>(options =>   
-                    options.UseSqlServer(configuration.GetConnectionString("eCommerceContext"))    
+                    options.UseSqlServer(configuration.GetConnectionString("eCommerce"))    
                 );
 
 

@@ -8,10 +8,10 @@ namespace eCommerce.Models.interfaces
 {
     public interface IUsuarioRepository
     {
-        public IList<Usuario> Get();
-        public Usuario? GetById(int id);
-        public Usuario Add(Usuario usuario);
-        public Usuario Update(Usuario usuario);
-        public bool Delete(int id);
+        public Task<IList<Usuario>> Get();
+        public Task<Usuario?> GetById(int id);
+        public Task<Usuario> Add(Usuario usuario);
+        public Task<Usuario> Update(Usuario usuario);
+        public Task<bool> Delete(int id);
     }
 }
