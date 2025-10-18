@@ -1,39 +1,46 @@
 ﻿using eCommerce.Models;
 using eCommerce.Models.interfaces;
+using eCommerce.Repository.context;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace eCommerce.Repository.repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private readonly static List<Usuario> _db = [];
-        public IList<Usuario> Get()
+        private readonly ECommerceContext _db;
+        public UsuarioRepository(ECommerceContext db)
         {
-            return _db;
+            _db = db;
+        }
+        public async Task<IList<Usuario>> Get()
+        {
+
+            return await _db.Usuarios.ToListAsync();
         }
 
-        public Usuario? GetById(int id)
+        public async Task<Usuario?> GetById(int id)
         {
-            return _db.FirstOrDefault(u => u.Id == id);
+            return await _db.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
         }
-        public Usuario Add(Usuario usuario)
+        public Task<Usuario> Add(Usuario usuario)
         {
             _db.Add(usuario);
-            return usuario;
+            _db.SaveChanges();
+            return Task.FromResult(usuario);
         }
-        public Usuario Update(Usuario usuario)
+        public Task<Usuario> Update(Usuario usuario)
         {
-            _db.Remove(usuario);
-            _db.Add(usuario);
-            return usuario;
+            _db.Usuarios.Update(usuario);
+            _db.SaveChanges();
+            return Task.FromResult(usuario);
         }
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var usuario = GetById(id);
+            var usuario = await GetById(id);
             if (usuario == null) return false;
-            _db.Remove(usuario);
-
-            return true;
+            _db.Usuarios.Remove(usuario);
+            return await _db.SaveChangesAsync() > 0;
         }
 
 
